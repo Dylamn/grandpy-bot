@@ -1,0 +1,27 @@
+# IDE folder
+.idea/
+.vscode/
+
+# Virtual environment folder
+.venv/
+.env/
+venv/
+env/
+
+# .env file
+.env
+.env.production
+.env.backup
+
+*.pyc
+__pycache__/
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
