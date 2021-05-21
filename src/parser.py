@@ -101,7 +101,7 @@ class Parser:
 
         :param string: The string on which operates.
         """
-        return re.sub("\w'", '', string)
+        return re.sub("[a-zA-Z]+\s*'", '', string)
 
     @staticmethod
     def _surround_char(match: re.Match, surrounded_by=" "):
