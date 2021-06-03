@@ -20,7 +20,8 @@ def create_app(test_config=None):
         pass
 
     # Blueprints registration
-    from .routes.web import view
-    app.register_blueprint(view)
+    from .routes import web, api
+    app.register_blueprint(web)
+    app.register_blueprint(api)
 
     return app
