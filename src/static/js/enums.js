@@ -1,0 +1,1 @@
+export const senders = { 'SELF': 'self', 'INTERLOCUTOR': 'interlocutor' }

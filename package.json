@@ -1,8 +1,8 @@
 {
   "name": "grandpy-bot",
   "version": "1.0.0",
-  "description": "Copy the ``.env.example`` file at the root of the project and rename it ``.env``.\r Fill the variable on your need.",
-  "main": "tailwind.config.js",
+  "description": "Grandpy Bot is a Python - Flask - based bot, with a front-end builded with tailwindcss.",
+  "main": "src/static/js/main.js",
   "directories": {
     "test": "tests"
   },
