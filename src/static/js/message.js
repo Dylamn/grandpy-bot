@@ -1,4 +1,14 @@
+import { senders } from './enums.js'
+
 class Message {
+
+  /**
+   * Enum of the differents types of actors in a chat.
+   *
+   * @type {{INTERLOCUTOR: string, SELF: string}}
+   */
+  static senders = senders
+
   /**
    * Message constructor.
    *
@@ -11,12 +21,12 @@ class Message {
     this.recentlyCreated = false
 
     // Determines if the message is sent by this client or from the interlocutor.
-    this.fromSelf = sender.toLowerCase() === 'self'
+    this.fromSelf = sender.toLowerCase() === Message.senders.SELF
 
     this.messagesRoot = document.getElementById('messages')
 
     if (! this.messagesRoot) {
-      throw new DOMException('No Element with `messages` ID (#messages) found in the document.')
+      throw new DOMException('No Element with ID `messages` (#messages) found in the document.')
     }
 
     const lastMessage = this.messagesRoot.lastElementChild
@@ -34,6 +44,7 @@ class Message {
     this.createLine = this.createLine.bind(this)
     this.update = this.update.bind(this)
     this.addLine = this.addLine.bind(this)
+    this.addImage = this.addImage.bind(this)
     this.getLayout = this.getLayout.bind(this)
     this.getLinesLayout = this.getLinesLayout.bind(this)
   }
@@ -68,8 +79,9 @@ class Message {
     }
 
     const messageLayout = chatMessage.firstElementChild
+    const justifyEnd = messageLayout.classList.contains('justify-end')
 
-    return (messageLayout.classList.contains('justify-end') && this.fromSelf)
+    return justifyEnd && this.fromSelf || (! justifyEnd && ! this.fromSelf)
   }
 
   /**
@@ -90,14 +102,18 @@ class Message {
 
     // This div defines the layout of message lines.
     const linesLayoutDiv = document.createElement('div')
-    linesLayoutDiv.classList.add('flex', 'flex-col', 'space-y-4', 'max-w-xs', 'mx-2', 'py-2')
+    linesLayoutDiv.classList.add(
+      'flex', 'flex-col', 'space-y-4', 'max-w-xs', 'mx-2', 'py-2', this.fromSelf ? 'order-1' : 'order-2'
+    )
 
-    if (typeof textContent === 'string') {
+    if (textContent !== null) {
       this.addLine(linesLayoutDiv, textContent)
     }
 
     // Append div together...
     layoutDiv.appendChild(linesLayoutDiv)
+    layoutDiv.appendChild(this.addImage())
+
     chatMessageDiv.appendChild(layoutDiv)
 
     return chatMessageDiv
@@ -113,7 +129,10 @@ class Message {
       return
     }
 
+    // Mount the Element in the DOM
     this.messagesRoot.appendChild(this.HTMLStructure)
+    // Scroll down to the last message
+    this.messagesRoot.scrollTop = this.messagesRoot.scrollHeight
   }
 
   /**
@@ -124,6 +143,9 @@ class Message {
     if (this.recentlyCreated) {
       return
     }
+
+    const lastLine = this.getLinesLayout().lastElementChild // lastLine is a HTML
+    lastLine.lastElementChild.classList.remove(this.fromSelf ? 'rounded-br-none' : 'rounded-bl-none')
 
     this.addLine(this.getLinesLayout(), textContent)
   }
@@ -153,9 +175,9 @@ class Message {
     const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg']
 
     if (this.fromSelf) { // Means the message(s) comes from the user.
-      styleClasses.push('bg-blue-500', 'rounded-br-none')
+      styleClasses.push('bg-blue-500', 'dark:bg-blue-600', 'text-white', 'rounded-br-none')
     } else { // Means the message(s) comes from the intercolutor.
-      styleClasses.push('bg-gray-200', 'rounded-bl-none')
+      styleClasses.push('bg-gray-200', 'dark:bg-gray-300', 'dark', 'rounded-bl-none')
     }
 
     line.setAttribute('class', styleClasses.join(' '))
@@ -169,6 +191,20 @@ class Message {
     wrapper.appendChild(line)
 
     return wrapper
+  }
+
+  addImage () {
+    const imgPath = this.fromSelf
+      ? '/static/images/me.png'
+      : '/static/images/robot.png'
+
+    const img = document.createElement('img')
+
+    img.src = imgPath
+    img.alt = 'profile image'
+    img.classList.add('w-8', 'h-8', 'rounded-full', 'order-1')
+
+    return img
   }
 }
 

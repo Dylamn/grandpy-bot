@@ -1,5 +1,4 @@
 import Message from './message.js'
-import { senders } from './enums.js'
 
 const form = document.getElementById('form_question')
 
@@ -16,7 +15,7 @@ form.onsubmit = async (ev) => {
   form.reset()
 
   // Insert user question
-  new Message(data.get('user_input'), senders.SELF).push()
+  new Message(data.get('user_input'), Message.senders.SELF).push()
 
   let response = await fetch('/api/ask-question', {
     method: 'POST',
@@ -36,5 +35,5 @@ function displayAnswer (json) {
     return
   }
 
-  new Message(answer, senders.INTERLOCUTOR).push()
+  new Message(answer, Message.senders.INTERLOCUTOR).push()
 }

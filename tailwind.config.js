@@ -1,6 +1,7 @@
 module.exports = {
   purge: [
     './src/templates/**/*.html',
+    './src/static/js/message.js',
   ],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
