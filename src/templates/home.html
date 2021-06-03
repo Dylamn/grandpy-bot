@@ -7,26 +7,44 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container mx-auto flex flex-col mb-4">
-        <h1 class="text-5xl text-center text-indigo-500">
+    <div class="container mx-auto">
+        <h1 class="text-5xl text-center text-gray-600 dark:text-white">
             Grandpy Bot, raconte nous une histoire !
         </h1>
 
-        <div class="grid grid-cols-3 space-x-8 my-4">
-            <div class="text-center text-xl text-indigo-400">
-                <p id="think" class="">
-                    Grandpy Bot réfléchit...
-                </p>
+        <div class="flex-1 p-2 sm:p-6 justify-between flex flex-col" style="height: 70vh">
+            <div id="messages" class="flex flex-col p-3 space-y-0 overflow-y-auto">
+                <!-- Messages goes here -->
             </div>
-            <div class="text-justify px-4 py-2 rounded-lg rounded-bl-none inline-block bg-gray-100 text-indigo-500">
-                <p id="answer" class="">
-                    Grandpy Bot répond ici !
-                </p>
+            <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                <form id="form_question" class="relative sm:flex">
+                    <label for="user_input" class="block text-xl text-indigo-400">
+                    </label>
+                    <input id="user_input" name="user_input" type="text" placeholder="Write Something"
+                           class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600
+                              pl-6 bg-gray-200 dark:bg-gray-800 rounded-full py-3"/>
+
+                    <!-- Send button -->
+                    <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+                        <button id="send_message" type="submit" class="inline-flex items-center justify-center
+                        rounded-full h-12 w-12 transition duration-500 ease-in-out text-white border-white border-2
+                        bg-gray-300 dark:bg-gray-900 hover:bg-blue-600 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                 class="h-6 w-6 transform rotate-90">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
             </div>
-        </div>
+        </div> <!-- End chat frame -->
     </div>
 {% endblock %}
 
 {% block footer %}
     {% include 'layouts/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 {% endblock %}

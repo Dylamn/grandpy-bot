@@ -8,11 +8,13 @@
     <title>{% block title %}{% endblock %} &#8212; Grandpy Bot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/compiled.css') }}">
 </head>
-<body>
+<body class="bg-white dark:bg-gray-900">
 {% block header %}{% endblock %}
 
 {% block content %}{% endblock %}
 
 {% block footer %}{% endblock %}
+
+{% block scripts %}{% endblock %}
 </body>
 </html>
