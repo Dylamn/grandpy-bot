@@ -1,5 +1,5 @@
 import unittest
-from src.parser import Parser
+from grandpybot.parser import Parser
 
 
 class ParserTestCase(unittest.TestCase):

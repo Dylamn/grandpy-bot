@@ -28,12 +28,10 @@ form.onsubmit = async (ev) => {
 }
 
 function displayAnswer (json) {
-  const answer = json['answer']
-
-  if (! answer) {
+  if (! json.hasOwnProperty('answer')) {
     console.error('An error occurred. Please try again later.')
     return
   }
 
-  new Message(answer, Message.senders.INTERLOCUTOR).push()
+  new Message(json.answer, Message.senders.INTERLOCUTOR).push()
 }

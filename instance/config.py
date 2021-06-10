@@ -10,7 +10,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    pass
+    GMAPS_API_KEY = getenv('GOOGLE_MAPS_API_KEY')
 
 
 class DevelopmentConfig(Config):
