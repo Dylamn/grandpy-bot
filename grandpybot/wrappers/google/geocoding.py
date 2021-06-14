@@ -5,7 +5,7 @@ class GeocodingMixin(object):
     _GEOCODING_URI = 'maps/api/geocode/{0}'
 
     def _request(self, method: str, url: str, params: dict) -> Response:
-        raise NotImplementedError("")
+        raise NotImplementedError("`_request` method is not overrided in the base class.")
 
     def geocode(self, address: str = None, region: str = None, language: str = None) -> list:
         """

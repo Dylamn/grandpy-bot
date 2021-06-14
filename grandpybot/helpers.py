@@ -19,20 +19,30 @@ def base_path(relpath: str = ''):
     return path.joinpath(relpath)
 
 
-def data_get(d: dict, key: Union[str, list]):
-    """Get an item from a dict using "dot" notation.
+def data_get(target: Union[dict, list], key: Union[str, list], default=None):
+    """Get an item from a list/dict using "dot" notation.
 
-    :param d: A dictionnary.
+    :param target: Must be either a list or a dict.
 
     :param key: The path to the value with dot notation.
         Can be a list of key (strings).
+
+    :param default: The default value if nothing is found.
     """
     key = key.split('.') if isinstance(key, str) else key
+
+    if not isinstance(key, list):
+        return target
 
     # head is the current key on which we'll access.
     # tail is the key(s) left which we haven't access already.
     head, *tail = key
 
-    value = d.get(head)
+    if isinstance(target, list) and (head.isnumeric() and int(head) < len(target)):
+        value = target[int(head)]
+    elif isinstance(target, dict) and head in target:
+        value = target[head]
+    else:
+        return default
 
-    return data_get(value, tail) if value and tail else value
+    return data_get(value, tail, default) if tail else value
