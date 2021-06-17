@@ -1,6 +1,13 @@
 class GrandpyBot {
+
+  /**
+   * Get a response of Grandpy Bot from a question.
+   *
+   * @param {any} data
+   * @return {Promise<Response>}
+   */
   async answerQuestion (data) {
-    const response = await fetch('/api/questions/answer', {
+    return await fetch('/api/questions/answer', {
       method: 'POST',
       body: data
     })

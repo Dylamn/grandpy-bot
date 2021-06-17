@@ -22,26 +22,36 @@ form.onsubmit = async (ev) => {
   new Message(data.get('user_input'), Message.senders.SELF).push()
 
   // Ask the question to GrandPy
-  const gbresponse = grandpy.answerQuestion(data)
-  const response = await fetch('/api/questions/answer', {
-    method: 'POST',
-    body: data
-  })
+  const response = await grandpy.answerQuestion(data)
 
+  if (response.status !== 200) {
+    return console.error('An error occurred. Please try again later.')
+  }
   const result = await response.json()
 
-  displayAnswer(result, response.status)
+  console.log('API response', response.status, result)
+
+  displayAnswer(result)
 }
 
-function displayAnswer (json, status_code) {
-  if (status_code !== 200) {
-    console.error('An error occurred. Please try again later.')
-    return
-  }
+function displayAnswer (json) {
+  let msg_content = ''
 
   if (json.status !== 'ok') {
-    return console.error('Not found?')
+    msg_content = 'Une erreur est survenue. Veuillez réessayez plus tard.'
+  } else {
+    msg_content = json.message
+
+    if (json.wiki_text) {
+      msg_content += json.wiki_text
+    }
   }
 
-  new Message(json.wiki_text, Message.senders.INTERLOCUTOR).push()
+  const msg = new Message(msg_content, Message.senders.INTERLOCUTOR)
+
+  if (json.location) {
+    msg.embedMap(json.location)
+  }
+
+  msg.push()
 }

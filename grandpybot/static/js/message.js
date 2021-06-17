@@ -208,7 +208,8 @@ class Message {
   }
 
   embedMap () {
-    // TODO: embed map
+    // TODO: implement logic
+    return ''
   }
 }
 

@@ -2,8 +2,7 @@ from flask import Blueprint, request, current_app as app
 
 from grandpybot.helpers import data_get
 from grandpybot.parser import Parser
-from grandpybot.wrappers.google import Google
-from grandpybot.wrappers.wikipedia import Wikipedia
+from grandpybot.wrappers import Google, Wikipedia
 
 api = Blueprint("api", __name__, url_prefix='/api')
 
@@ -54,7 +53,7 @@ def ask_question():
             error_msg = f"Ma mémoire me fait défaut, je ne me rappelle pas de " \
                         f"cet endroit."
     else:  # No subject found.
-        error_msg = "Je n'ai pas de connaissances sur cet endroit."
+        error_msg = "Excusez-moi mais je n'ai pas compris votre question."
 
     body = {
         "status": "ok",

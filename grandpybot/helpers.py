@@ -1,8 +1,12 @@
-from typing import Union
+from typing import Union, Any
+from flask import current_app as app
 
 
 def base_path(relpath: str = ''):
-    """Get the path to the base of the project."""
+    """Get the path to the base of the project.
+
+    :param relpath: Relative path which will be appended to the base path.
+    """
     from pathlib import Path
 
     path = Path().absolute().resolve()
@@ -19,7 +23,21 @@ def base_path(relpath: str = ''):
     return path.joinpath(relpath)
 
 
-def data_get(target: Union[dict, list], key: Union[str, list], default=None):
+def config(key: Union[str, list] = None, default=None) -> Any:
+    """Get the specified configuration value.
+
+    :param key: The key to access a value.
+    :param default: The default returned value if nothing is found.
+    :return Any:
+    """
+    if key is None:
+        return app.config
+
+    return data_get(app.config, key, default)
+
+
+def data_get(target: Union[dict, list], key: Union[str, list],
+             default=None) -> Any:
     """Get an item from a list/dict using "dot" notation.
 
     :param target: Must be either a list or a dict.
