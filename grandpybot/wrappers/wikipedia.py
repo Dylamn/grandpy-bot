@@ -1,19 +1,17 @@
-import requests
+import re
+
+from grandpybot.helpers import data_get
+from grandpybot.wrappers.client import Client
+
+_DEFAULT_BASE_URL = 'https://fr.wikipedia.org'
 
 
-class Wikipedia:
-    _BASE_URL = 'https://fr.wikipedia.org/w/api.php'
+class Wikipedia(Client):
+    """Class used for getting texts from wikipedia and format it."""
+    def __init__(self):
+        super(Wikipedia, self).__init__(base_url=_DEFAULT_BASE_URL)
 
-    def _request(self, method: str, uri: str = None, params=None) -> requests.Response:
-        """Perform an HTTP request."""
-        if params is None:
-            params = {}
-
-        url = self._BASE_URL if not uri else self._BASE_URL + uri
-
-        return requests.request(method, url, params=params)
-
-    def search(self, strinput) -> requests.Response:
+    def search(self, strinput) -> str:
         """Perform a query search against the wikipedia API."""
         params = {
             'titles': strinput,
@@ -21,7 +19,28 @@ class Wikipedia:
             "action": "query",
             "format": "json",
             "prop": "extracts",
+            "exsentences": 3,
             "explaintext": 1,
         }
 
-        return self._request('GET', params=params)
+        resp = self._request(method='GET', uri='/w/api.php', params=params)
+        jsonbody = resp.json()
+
+        pages_found = data_get(jsonbody, 'query.pages')
+
+        if "-1" in pages_found:  # -1 means no results
+            return ''
+
+        first_page = list(pages_found.values())[0]
+
+        return self._format_text(data_get(first_page, 'extract', ''))
+
+    @staticmethod
+    def _format_text(text_) -> str:
+        """Format the extracted text from wikipedia
+
+        This method removes the section titles.
+        """
+        paragraphs = re.split("={2,3}.*={2,3}", text_)
+
+        return " ".join(f_p.strip('\n ') for f_p in paragraphs)

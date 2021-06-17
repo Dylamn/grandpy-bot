@@ -1,13 +1,11 @@
-from requests import Response
-
-
 class GeocodingMixin(object):
-    _GEOCODING_URI = 'maps/api/geocode/{0}'
+    def _request(self, method: str, url: str, params: dict):
+        raise NotImplementedError(
+            "`_request` method is not overrided in the base class."
+        )
 
-    def _request(self, method: str, url: str, params: dict) -> Response:
-        raise NotImplementedError("`_request` method is not overrided in the base class.")
-
-    def geocode(self, address: str = None, region: str = None, language: str = None) -> list:
+    def geocode(self, address: str = None, region: str = None,
+                language: str = None) -> dict:
         """
         GeocodingMixin is the process of converting addresses
         (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
@@ -36,4 +34,4 @@ class GeocodingMixin(object):
         if language:
             params["language"] = language
 
-        return self._request('GET', self._GEOCODING_URI, params).json().get('results', [])
+        return self._request('GET', '/maps/api/geocode/{0}', params).json()

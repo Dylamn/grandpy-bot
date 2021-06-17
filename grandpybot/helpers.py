@@ -38,7 +38,8 @@ def data_get(target: Union[dict, list], key: Union[str, list], default=None):
     # tail is the key(s) left which we haven't access already.
     head, *tail = key
 
-    if isinstance(target, list) and (head.isnumeric() and int(head) < len(target)):
+    if isinstance(target, list) \
+            and (head.isnumeric() and int(head) < len(target)):
         value = target[int(head)]
     elif isinstance(target, dict) and head in target:
         value = target[head]

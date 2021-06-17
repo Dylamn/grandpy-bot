@@ -206,6 +206,10 @@ class Message {
 
     return img
   }
+
+  embedMap () {
+    // TODO: embed map
+  }
 }
 
 export default Message

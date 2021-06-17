@@ -8,7 +8,7 @@ from grandpybot.wrappers.wikipedia import Wikipedia
 api = Blueprint("api", __name__, url_prefix='/api')
 
 
-@api.route('/ask-question', methods=['POST'])
+@api.route('/questions/answer', methods=['POST'])
 def ask_question():
     question = request.form.get('user_input')
     parser = Parser(string=question)
@@ -18,38 +18,48 @@ def ask_question():
     wiki = Wikipedia()
 
     subject = parser.find_address()
-    answer = None
+    answer = {}
+    error_msg = ''
 
     # If answer is not None, we'll call the maps API.
     if subject:
-        # Then if maps returns a result, call wiki and get the first lines (if there's a result too)
-        gmaps_result = google.geocode(subject, region='fr', language='fr')
+        gmaps_resp = google.geocode(subject, region='fr', language='fr')
 
-        if gmaps_result:
-            lat, lng = data_get(gmaps_result[0], 'geometry.location').values()
+        if gmaps_resp.get('status', '').upper() == 'OK':
+            gmaps_result = data_get(gmaps_resp, 'results.0')
+
+            # Add latitude and longitude to the final response.
+            answer["location"] = data_get(gmaps_result, 'geometry.location', {})
+
+            # Retrieve the street name to perform a search on wikipedia.
+            # For example with: 10 Quai de la Charente, 75019 Paris, France
+            # We'll get the "Quai de la Charente" substring.
             street = [
-                comp['long_name'] for comp in data_get(gmaps_result, '0.address_components')
+                comp['long_name']
+                for comp in data_get(gmaps_result, 'address_components')
                 if 'route' in comp['types']
             ].pop()
 
-            wiki_response = wiki.search(street)
+            # call wiki and get the first lines (if there's a result too)
+            wiki_text = wiki.search(street)
 
-            if wiki_response:
-                wiki_text = data_get(wiki_response.json(), 'query.pages')
-
+            if wiki_text:
                 # Complete the answer...
-                answer = next(iter(wiki_text.values()))['extract']
+                answer.setdefault('wiki_text', wiki_text)
 
-            else:
-                # Nothing found on wiki, simply answer with the address only.
-                answer = data_get(gmaps_result[0], 'formatted_address')
-
-        else:
-            # Nothing found on maps
-            answer = f"Ma mémoire me fait défaut ou bien je ne connais pas l'adresse."
+            else:  # Nothing found on wiki.
+                error_msg = "Je me rappelle seulement de l'emplacement de cet " \
+                            "endroit. Le voici : "
+        else:  # Nothing found on maps
+            error_msg = f"Ma mémoire me fait défaut, je ne me rappelle pas de " \
+                        f"cet endroit."
+    else:  # No subject found.
+        error_msg = "Je n'ai pas de connaissances sur cet endroit."
 
     body = {
-        'answer': answer or "I don't understand, i'm sorry! :("
+        "status": "ok",
+        "message": error_msg or "Auto msg",
+        **answer
     }
 
     return body, 200
