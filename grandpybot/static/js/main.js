@@ -20,40 +20,43 @@ form.onsubmit = async (ev) => {
   // Insert user question
   new Message(data.get('user_input'), Message.senders.SELF).push()
 
-  // Start a loader for waiting the bot response.
+  // Launch a loader to wait for the bot to respond.
   const bot_msg_loader = new Message(Message.typing(), Message.senders.INTERLOCUTOR)
   bot_msg_loader.push()
   // Ask the question to GrandPy
   const response = await grandpy.answerQuestion(data)
 
-  if (response.status !== 200) {
-    console.error('An error occurred. Please try again later.')
+  if (response.status >= 500) {
+    return bot_msg_loader.clear()
+      .update('Une erreur est survenue. Veuillez réessayez plus tard.')
   }
   const result = await response.json()
-
-  console.log('API response', response.status, result)
 
   displayAnswer(result, bot_msg_loader)
 }
 
-function displayAnswer (json, bot_msg) {
-  let error_msg = null
+function displayVerboseError (msg, json) {
+  const error = json.error
 
-  if (json.error) {
-    error_msg = json.error.message
-  } else if (json.status !== 'ok') {
-    error_msg = 'Une erreur est survenue. Veuillez réessayez plus tard.'
+  // Display the error message
+  msg.update(error.message)
+
+  if (error.status === 'wiki_not_found') { // We have atleast the location
+    msg.update(`Voici l'adresse :\n${json.address}`)
+    msg.embedMap(json.location, json.address)
   }
+}
 
+function displayAnswer (json, bot_msg) {
   // Clear the typing loader...
-  // bot_msg.clear()
+  bot_msg.clear()
 
-  if (error_msg) { // An error occurred.
-    return bot_msg.update(error_msg)
+  if (json.error) { // An error occurred.
+    return displayVerboseError(bot_msg, json)
   }
 
   // Write grandpy messages...
-  // bot_msg.update(json.address)
+  bot_msg.update(json.address)
   bot_msg.embedMap(json.location, json.address)
   grandpy.writeMessage(json.message)
   grandpy.writeMessage(json.wiki_text)

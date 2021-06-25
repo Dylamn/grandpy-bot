@@ -44,9 +44,9 @@ class GrandpyBot:
             ].pop()
         else:
             result['error'] = {
-                'status': 'place_not_found',
-                'message': f"Ma mémoire me fait défaut, je ne me rappelle pas de "
-                           f"cet endroit."
+                'status': 'location_not_found',
+                'message': f"Ma mémoire me fait sûrement défaut, je ne connais "
+                           f"pas cet endroit."
             }
 
         return result, street
@@ -58,8 +58,8 @@ class GrandpyBot:
             return {
                 'error': {
                     'status': 'wiki_not_found',
-                    'message': "Je me rappelle seulement de l'emplacement de "
-                               "cet endroit. Le voici : "
+                    'message': "Je ne me rappelle que de l'emplacement de "
+                               "cet endroit."
                 }
             }
 

@@ -18,7 +18,7 @@ def test_bot_answer(mock_post: mock.MagicMock, client: FlaskClient):
 
     assert rv.status_code == 200 and json_body['status'] == 'ok'
 
-    # All keys that should be present in the JSON body.
+    # All outermost keys that should be present in the JSON body.
     response_keys = [
         'location', 'message', 'wiki_text', 'wiki_url', 'address', 'status',
     ]
