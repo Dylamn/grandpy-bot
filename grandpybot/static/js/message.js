@@ -10,9 +10,21 @@ class Message {
   static senders = senders
 
   /**
+   * Create a typing loader.
+   *
+   * @return {HTMLDivElement}
+   */
+  static typing () {
+    const loader = document.createElement('div')
+    loader.className = 'dot-typing'
+
+    return loader
+  }
+
+  /**
    * Message constructor.
    *
-   * @param {string|null} textContent
+   * @param {string|HTMLElement|null} textContent
    * @param {string} sender
    * @return void
    */
@@ -40,6 +52,7 @@ class Message {
     }
 
     this.push = this.push.bind(this)
+    this.clear = this.clear.bind(this)
     this.create = this.create.bind(this)
     this.createLine = this.createLine.bind(this)
     this.update = this.update.bind(this)
@@ -47,6 +60,7 @@ class Message {
     this.addImage = this.addImage.bind(this)
     this.getLayout = this.getLayout.bind(this)
     this.getLinesLayout = this.getLinesLayout.bind(this)
+    this.embedMap = this.embedMap.bind(this)
   }
 
   /**
@@ -131,48 +145,53 @@ class Message {
 
     // Mount the Element in the DOM
     this.messagesRoot.appendChild(this.HTMLStructure)
-    // Scroll down to the last message
-    this.messagesRoot.scrollTop = this.messagesRoot.scrollHeight
   }
 
   /**
+   * Append a line to the end of the message.
    *
-   * @param {string} textContent
+   * @param {any} content
    */
-  update (textContent) {
-    if (this.recentlyCreated) {
-      return
+  update (content) {
+    const lastLine = this.getLinesLayout().lastElementChild
+
+    if (lastLine) {
+      lastLine.lastElementChild.classList.remove(this.fromSelf ? 'rounded-br-none' : 'rounded-bl-none')
     }
 
-    const lastLine = this.getLinesLayout().lastElementChild // lastLine is a HTML
-    lastLine.lastElementChild.classList.remove(this.fromSelf ? 'rounded-br-none' : 'rounded-bl-none')
-
-    this.addLine(this.getLinesLayout(), textContent)
+    this.addLine(this.getLinesLayout(), content)
   }
 
   /**
    * Create and append a new line to the given container.
    *
    * @param {HTMLDivElement} container
-   * @param {string} text
+   * @param {any} content
    */
-  addLine (container, text) {
-    container.appendChild(this.createLine(text))
+  addLine (container, content) {
+    container.appendChild(this.createLine(content))
   }
 
   /**
    * Create a new message line.
    *
-   * @param {string} content
+   * @param {any} content
    * @return {HTMLDivElement}
    */
   createLine (content) {
     // Create a div which will wrap the span otherwise the span will shrink as much as it can
     const wrapper = document.createElement('div')
-    const line = document.createElement('span')
+    let line, lineContent = content
+
+    if (content instanceof HTMLElement) {
+      line = document.createElement('div')
+    } else {
+      line = document.createElement('span')
+      lineContent = document.createTextNode(content)
+    }
 
     // CSS classes which will be applied on the line(s).
-    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg']
+    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg', 'whitespace-pre-wrap']
 
     if (this.fromSelf) { // Means the message(s) comes from the user.
       styleClasses.push('bg-blue-500', 'dark:bg-blue-600', 'text-white', 'rounded-br-none')
@@ -181,11 +200,7 @@ class Message {
     }
 
     line.setAttribute('class', styleClasses.join(' '))
-
-    // Create a node for the text content of the line
-    const text = document.createTextNode(content)
-
-    line.appendChild(text)
+    line.appendChild(lineContent)
 
     // Append the line to the wrapper
     wrapper.appendChild(line)
@@ -207,9 +222,49 @@ class Message {
     return img
   }
 
-  embedMap () {
-    // TODO: implement logic
-    return ''
+  embedMap (location, address) {
+    const coordinates = [location.lat, location.lng]
+    const map_wrap = document.createElement('div')
+
+    map_wrap.id = `msg-${Date.now().toString()}`
+    map_wrap.classList.add('flex-grow', 'sm:h-48', 'sm:w-64', 'h-32', 'w-48')
+    // Append the map wrapper to the DOM before the instanciation of Leaflet.
+    // If the HTML Element given to Leaflet is not present in the DOM,
+    // it will raise an exception.
+    this.update(map_wrap)
+
+    // Create the Leaflet map
+    const map = L.map(map_wrap.id, {
+      zoomControl: false
+    }).setView(coordinates, 13)
+
+    // Add the marker to the founded place.
+    const marker = L.marker(coordinates).addTo(map)
+    if (address) {
+      marker.bindPopup(address).openPopup()
+    }
+
+    // Used google as the tile provider.
+    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      zoomControl: false,
+      zoom: 13,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    }).addTo(map)
+  }
+
+  /**
+   * Clear all message lines.
+   *
+   * @return {Message}
+   */
+  clear () {
+    const lines = this.getLinesLayout()
+
+    while (lines.lastElementChild) {
+      lines.removeChild(lines.lastElementChild)
+    }
+
+    return this
   }
 }
 

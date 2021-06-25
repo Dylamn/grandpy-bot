@@ -13,12 +13,18 @@ def test_bot_answer(mock_post: mock.MagicMock, client: FlaskClient):
     })
     json_body = rv.get_json()
 
+    # Assert that the Fake HTTP call has been made.
     mock_post.assert_called()
 
     assert rv.status_code == 200 and json_body['status'] == 'ok'
 
+    # All keys that should be present in the JSON body.
+    response_keys = [
+        'location', 'message', 'wiki_text', 'wiki_url', 'address', 'status',
+    ]
+
     # Check if all JSON keys are present.
-    for response_key in ['location', 'wiki_text', 'message']:
+    for response_key in response_keys:
         assert response_key in json_body
 
     assert json_body.get("location") == {"lat": 48.8975156, "lng": 2.3833993}

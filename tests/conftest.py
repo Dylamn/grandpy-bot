@@ -18,6 +18,8 @@ class MockResponse:
 
 @fixture
 def client():
+    """Create a testing client for the flask app.
+    """
     app = create_app()
     app.config['TESTING'] = True
 
@@ -137,7 +139,17 @@ def mocked_responses(*args, **kwargs) -> MockResponse:
                                    "\n\n\n== Origine du nom ==\nIl est nommé "
                                    "d'après la Charente, un fleuve français qui "
                                    "donna son nom à deux départements : la "
-                                   "Charente (16) et la Charente-Maritime (17)."
+                                   "Charente (16) et la Charente-Maritime (17).",
+                        "contentmodel": "wikitext",
+                        "pagelanguage": "fr",
+                        "pagelanguagehtmlcode": "fr",
+                        "pagelanguagedir": "ltr",
+                        "touched": "2021-06-24T10:07:37Z",
+                        "lastrevid": 163558565,
+                        "length": 1632,
+                        "fullurl": "https://fr.wikipedia.org/wiki/Quai_de_la_Charente",
+                        "editurl": "https://fr.wikipedia.org/w/index.php?title=Quai_de_la_Charente&action=edit",
+                        "canonicalurl": "https://fr.wikipedia.org/wiki/Quai_de_la_Charente"
                     }
                 }
             }

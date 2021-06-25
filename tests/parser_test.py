@@ -4,6 +4,8 @@ from grandpybot.parser import Parser
 
 class ParserTestCase(unittest.TestCase):
     def setUp(self) -> None:
+        # TODO: sentence below fails
+        # Salut GP, tu connais l'adresse de Openclassrooms, par hasard ?
         self.parser = Parser()
         self.question = "Salut GrandPy ! Est-ce que tu connais, " \
                         "par hasard, l'adresse d'OpenClassrooms ?"

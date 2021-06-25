@@ -1,3 +1,5 @@
+import Message from './message.js'
+
 class GrandpyBot {
 
   /**
@@ -11,6 +13,19 @@ class GrandpyBot {
       method: 'POST',
       body: data
     })
+  }
+
+  /**
+   * Send a message.
+   *
+   * @param msg_content
+   * @return {Message}
+   */
+  writeMessage(msg_content) {
+    const msg = new Message(msg_content, Message.senders.INTERLOCUTOR)
+    msg.push()
+
+    return msg
   }
 }
 

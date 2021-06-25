@@ -8,6 +8,7 @@
     <title>{% block title %}{% endblock %} &#8212; Grandpy Bot</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/compiled.css') }}">
+    {% block head %}{% endblock %}
 </head>
 <body class="bg-white dark:bg-gray-900">
 {% block header %}{% endblock %}

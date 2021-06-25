@@ -11,14 +11,15 @@ class Wikipedia(Client):
     def __init__(self):
         super(Wikipedia, self).__init__(base_url=_DEFAULT_BASE_URL)
 
-    def search(self, strinput) -> str:
+    def search(self, strinput) -> dict:
         """Perform a query search against the wikipedia API."""
         params = {
             'titles': strinput,
             # static params
             "action": "query",
             "format": "json",
-            "prop": "extracts",
+            "prop": "extracts|info",
+            "inprop": "url",
             "exsentences": 3,
             "explaintext": 1,
         }
@@ -29,17 +30,22 @@ class Wikipedia(Client):
         pages_found = data_get(jsonbody, 'query.pages')
 
         if "-1" in pages_found:  # -1 means no results
-            return ''
+            return {}
 
         first_page = list(pages_found.values())[0]
 
-        return self._format_text(data_get(first_page, 'extract', ''))
+        return {
+            'wiki_text': self._format_text(data_get(first_page, 'extract', '')),
+            'wiki_url': data_get(first_page, 'fullurl', '')
+        }
 
     @staticmethod
     def _format_text(text_) -> str:
         """Format the extracted text from wikipedia
 
         This method removes the section titles.
+
+        :param text_: The text to format.
         """
         paragraphs = re.split("={2,3}.*={2,3}", text_)
 
