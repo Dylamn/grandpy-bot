@@ -1,5 +1,7 @@
 # Grandpy Bot
 
+[![codecov](https://codecov.io/gh/Dylamn/grandpy-bot/branch/develop/graph/badge.svg?token=P2LSFZLB2S)](https://codecov.io/gh/Dylamn/grandpy-bot)
+
 ## Installation
 Copy the ``.env.example`` file at the root of the project and rename it ``.env``.
 Fill the variable on your need.
