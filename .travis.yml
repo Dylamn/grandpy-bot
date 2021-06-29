@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.7"
+
+before_install:
+  - python --version
+  - pip install -U pip
+install:
+  - pip install -r requirements.txt
+
+# Parameters are given by the pytest.ini file
+# Especially the coverage options
+script: pytest
+
+after_success:
+  # Submit coverage report to https://codecov.io
+  - bash <(curl -s https://codecov.io/bash)
