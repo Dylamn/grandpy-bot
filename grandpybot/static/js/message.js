@@ -16,7 +16,7 @@ class Message {
    */
   static typing () {
     const loader = document.createElement('div')
-    loader.className = 'dot-typing'
+    loader.className = 'dot-typing m-2'
 
     return loader
   }
@@ -196,7 +196,7 @@ class Message {
     if (this.fromSelf) { // Means the message(s) comes from the user.
       styleClasses.push('bg-blue-500', 'dark:bg-blue-600', 'text-white', 'rounded-br-none')
     } else { // Means the message(s) comes from the intercolutor.
-      styleClasses.push('bg-gray-200', 'dark:bg-gray-300', 'dark', 'rounded-bl-none')
+      styleClasses.push('bg-gray-200', 'dark:bg-gray-700', 'dark:text-white', 'rounded-bl-none')
     }
 
     line.setAttribute('class', styleClasses.join(' '))

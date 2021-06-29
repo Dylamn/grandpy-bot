@@ -11,6 +11,8 @@ class GrandpyBot:
         "Je me rappelle, c'était en 1939 : ",
         "Mais t'ai-je déjà raconté l'histoire de ce quartier qui m'a vu en "
         "culottes courtes ? ",
+        "Je t'ai déjà dit que j'avais moi-même posé les premiers pavés de ce "
+        "quartier ? "
     ]
 
     def __init__(self, gmap_key=None):
@@ -45,8 +47,8 @@ class GrandpyBot:
         else:
             result['error'] = {
                 'status': 'location_not_found',
-                'message': f"Ma mémoire me fait sûrement défaut, je ne connais "
-                           f"pas cet endroit."
+                'message': "Ma mémoire me fait sûrement défaut, je ne connais "
+                           "pas cet endroit."
             }
 
         return result, street

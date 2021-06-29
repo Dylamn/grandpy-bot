@@ -21,7 +21,7 @@
                 <form id="form_question" class="relative sm:flex">
                     <label for="user_input" class="block text-xl text-indigo-400">
                     </label>
-                    <input id="user_input" name="user_input" type="text" placeholder="Write Something"
+                    <input id="user_input" name="user_input" type="text" placeholder="Ask a question to Grandpy here"
                            class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600
                                   placeholder-gray-600 dark:placeholder-white-600 dark:text-white pl-6 bg-gray-200
                                   dark:bg-gray-800 rounded-full py-3"/>
@@ -49,8 +49,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""
+    {{ super() }}
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin="" defer
             integrity='sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=='>
     </script>
 {% endblock %}

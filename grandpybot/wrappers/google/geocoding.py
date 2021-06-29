@@ -7,7 +7,7 @@ class GeocodingMixin(object):
     def geocode(self, address: str = None, region: str = None,
                 language: str = None) -> dict:
         """
-        GeocodingMixin is the process of converting addresses
+        Geocoding is the process of converting addresses
         (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
         coordinates (like latitude 37.423021 and longitude -122.083739).
 
