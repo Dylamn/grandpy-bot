@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %} &#8212; Grandpy Bot</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/compiled.css') }}">
+    <!-- Head Scripts -->
+    <script> <!-- Script inline in head to avoid FOUC (Flash Of Unstyled Content) -->
+      if (localStorage.theme === 'dark' || (! ('theme' in localStorage)
+        && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
+    {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen grid m-0 grid-rows-1 bg-white dark:bg-gray-900">
+{% block header %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}" defer></script>
+{% endblock %}
+</body>
+</html>

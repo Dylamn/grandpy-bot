@@ -1,0 +1,57 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+{% block head %}
+    <!-- Add leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin=""
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="/>
+{% endblock %}
+<!-- Body start -->
+{% block header %}
+    {% include 'layouts/header.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="flex-1 p-2 sm:p-6 justify-between flex flex-col h-screen-3/4">
+            <div id="messages" class="flex flex-col p-3 space-y-0 overflow-y-auto">
+                <!-- Messages goes here -->
+            </div>
+            <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                <form id="form_question" class="relative sm:flex">
+                    <label for="user_input" class="block text-xl text-indigo-400">
+                    </label>
+                    <input id="user_input" name="user_input" type="text" placeholder="Ask a question to Grandpy here"
+                           class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600
+                                  placeholder-gray-600 dark:placeholder-white-600 dark:text-white pl-6 bg-gray-200
+                                  dark:bg-gray-800 rounded-full py-3"/>
+
+                    <!-- Send button -->
+                    <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+                        <button id="send_message" type="submit" class="inline-flex items-center justify-center
+                        rounded-full h-12 w-12 transition duration-500 ease-in-out text-white border-white border-2
+                        bg-gray-300 dark:bg-gray-900 hover:bg-blue-600 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                 class="h-6 w-6 transform rotate-90">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009
+                                15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- End chat frame -->
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'layouts/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin="" defer
+            integrity='sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=='>
+    </script>
+{% endblock %}

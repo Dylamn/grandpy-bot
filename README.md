@@ -1,4 +1,7 @@
 # Grandpy Bot
+[comment]: <> (Badges)
+[![Build Status](https://travis-ci.com/Dylamn/grandpy-bot.svg?branch=master)](https://travis-ci.com/Dylamn/grandpy-bot)
+[![codecov](https://codecov.io/gh/Dylamn/grandpy-bot/branch/develop/graph/badge.svg?token=P2LSFZLB2S)](https://codecov.io/gh/Dylamn/grandpy-bot)
 
 ## Installation
 Copy the ``.env.example`` file at the root of the project and rename it ``.env``.
@@ -53,6 +56,17 @@ Use ``npm run build-tailwindcss`` which will build the ``styles.css`` file.
 When building for **production**, 
 set ``NODE_ENV=production`` on the command line when building your CSS:
 ````shell
-NODE_ENV=production npm run build-tailwindcss
+$ NODE_ENV=production npm run build-tailwindcss
 ````
 This will make sure Tailwind removes any unused CSS for best performance.
+
+### Run on localhost
+After the installation steps, you can run the application through the terminal with the following command (don't 
+forget to activate your virtual environment):
+```shell
+$ flask run
+```
+or with [Gunicorn](https://gunicorn.org/):
+````shell
+$ gunicorn wsgi:app
+````

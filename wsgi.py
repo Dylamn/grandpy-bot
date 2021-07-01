@@ -1,4 +1,4 @@
-from src import create_app
+from grandpybot import create_app
 
 app = create_app()
 
