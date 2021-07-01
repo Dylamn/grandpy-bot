@@ -2,25 +2,23 @@ from typing import Union, Any
 from flask import current_app as app
 
 
-def base_path(relpath: str = ''):
+def base_path(relpath: str = '') -> str:
     """Get the path to the base of the project.
 
     :param relpath: Relative path which will be appended to the base path.
     """
     from pathlib import Path
 
-    path = Path().absolute().resolve()
+    path = Path().resolve()
     project_dir = 'grandpy-bot'
-    tries = 0
 
     if project_dir not in str(path):
-        EnvironmentError('Project folder not found.')
+        raise EnvironmentError('Project folder not found.')
 
-    while not str(path).endswith(project_dir) and tries < 3:
+    while not str(path).endswith(project_dir):
         path = path.parent
-        tries += 1
 
-    return path.joinpath(relpath)
+    return str(path.joinpath(relpath))
 
 
 def config(key: Union[str, list] = None, default=None) -> Any:

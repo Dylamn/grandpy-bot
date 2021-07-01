@@ -31,6 +31,7 @@ class Parser:
         self._parsed_string = []
 
         try:
+            print("LNG", language)
             with open(base_path(f'stopwords_{language.lower()}.json')) as file:
                 self._stopwords = set(json.load(file))
         except IOError:
@@ -101,7 +102,7 @@ class Parser:
 
         :param string: The string on which operates.
         """
-        return re.sub("[a-zA-Z]+\s*'", '', string)
+        return re.sub(r"[a-zA-Z]+\s*'", '', string)
 
     @staticmethod
     def _surround_char(match: re.Match, surrounded_by=" "):

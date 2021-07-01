@@ -1,4 +1,7 @@
+from contextlib import contextmanager
+
 from pytest import fixture
+from flask import template_rendered
 
 from grandpybot import create_app
 
@@ -156,5 +159,5 @@ def mocked_responses(*args, **kwargs) -> MockResponse:
         }, 200)
 
     return MockResponse({
-        "status": 'not_found', "message": "Route not found"
+        "status": "not_found", "message": "Route not found"
     }, 404)

@@ -2,10 +2,10 @@ import unittest
 from unittest import mock
 
 from grandpybot.wrappers.wikipedia import Wikipedia
-from .conftest import mocked_responses
+from tests.conftest import mocked_responses
 
 
-class MyTestCase(unittest.TestCase):
+class WikipediaTest(unittest.TestCase):
     def setUp(self) -> None:
         self.wiki = Wikipedia()
 

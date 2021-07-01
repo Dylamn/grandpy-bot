@@ -1,5 +1,6 @@
 # Grandpy Bot
-
+[comment]: <> (Badges)
+[![Build Status](https://travis-ci.com/Dylamn/grandpy-bot.svg?branch=master)](https://travis-ci.com/Dylamn/grandpy-bot)
 [![codecov](https://codecov.io/gh/Dylamn/grandpy-bot/branch/develop/graph/badge.svg?token=P2LSFZLB2S)](https://codecov.io/gh/Dylamn/grandpy-bot)
 
 ## Installation

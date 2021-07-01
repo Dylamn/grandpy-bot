@@ -1,14 +1,26 @@
 import unittest
+
+import pytest
+
 from grandpybot.parser import Parser
 
 
-class ParserTestCase(unittest.TestCase):
+class ParserTest(unittest.TestCase):
     def setUp(self) -> None:
         # TODO: sentence below fails
         # Salut GP, tu connais l'adresse de Openclassrooms, par hasard ?
         self.parser = Parser()
         self.question = "Salut GrandPy ! Est-ce que tu connais, " \
                         "par hasard, l'adresse d'OpenClassrooms ?"
+
+    @staticmethod
+    def testStopWordsNotFound():
+        try:
+            spanish_parser = Parser(language='es')
+
+            assert len(spanish_parser._stopwords) == 0
+        except IOError as e:
+            assert False, f"`Parser instanciation` raised an exception:\n{e}"
 
     def testSimpleParsing(self):
         expected = [

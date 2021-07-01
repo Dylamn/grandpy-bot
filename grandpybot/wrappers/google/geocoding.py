@@ -2,7 +2,7 @@ class GeocodingMixin(object):
     def _request(self, method: str, url: str, params: dict):
         raise NotImplementedError(
             "`_request` method is not overrided in the base class."
-        )
+        )  # pragma: no cover
 
     def geocode(self, address: str = None, region: str = None,
                 language: str = None) -> dict:

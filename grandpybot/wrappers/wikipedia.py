@@ -8,8 +8,8 @@ _DEFAULT_BASE_URL = 'https://fr.wikipedia.org'
 
 class Wikipedia(Client):
     """Class used for getting texts from wikipedia and format it."""
-    def __init__(self):
-        super(Wikipedia, self).__init__(base_url=_DEFAULT_BASE_URL)
+    def __init__(self, base_url=_DEFAULT_BASE_URL):
+        super(Wikipedia, self).__init__(base_url=base_url)
 
     def search(self, strinput) -> dict:
         """Perform a query search against the wikipedia API."""
