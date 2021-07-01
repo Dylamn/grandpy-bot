@@ -59,3 +59,6 @@ set ``NODE_ENV=production`` on the command line when building your CSS:
 NODE_ENV=production npm run build-tailwindcss
 ````
 This will make sure Tailwind removes any unused CSS for best performance.
+
+### Run on localhost
+After the installation steps, you can run the application through the termianl with one's of the following command:

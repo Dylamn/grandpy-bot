@@ -31,7 +31,6 @@ class Parser:
         self._parsed_string = []
 
         try:
-            print("LNG", language)
             with open(base_path(f'stopwords_{language.lower()}.json')) as file:
                 self._stopwords = set(json.load(file))
         except IOError:
@@ -116,21 +115,28 @@ class Parser:
             match.group(0), match.group(0).center(3, surrounded_by)
         )
 
-    def find_address(self, address_keyword='adresse'):
+    def find_address(self, address_keywords: list = None):
         """Find an extract an address from the parsed string.
 
-        :param address_keyword: A string where an address can follow this one.
+        :param address_keywords: A list of strings where an address/place can
+            follow this words.
         :return: str
         """
         address = ''
+        if not isinstance(address_keywords, list):
+            address_keywords = ["trouve", "situe", "adresse"]
 
         if len(self._parsed_string) < 1 and self.original_string:
             self.parse()
 
-        try:
-            i = self._parsed_string.index(address_keyword) + 1
-        except ValueError:
-            return ''
+        for address_keyword in address_keywords:
+            if address_keyword in self._parsed_string:
+                i = self._parsed_string.index(address_keyword) + 1
+                break
+        else:
+            # if the for loop as went through all the items without
+            # finding an address keyword.
+            i = 0
 
         for word in self._parsed_string[i:]:
             if word in self._punctuation:

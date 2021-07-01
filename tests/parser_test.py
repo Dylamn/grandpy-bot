@@ -1,7 +1,5 @@
 import unittest
 
-import pytest
-
 from grandpybot.parser import Parser
 
 
@@ -14,7 +12,7 @@ class ParserTest(unittest.TestCase):
                         "par hasard, l'adresse d'OpenClassrooms ?"
 
     @staticmethod
-    def testStopWordsNotFound():
+    def testParserStopWordsNotFound():
         try:
             spanish_parser = Parser(language='es')
 
@@ -22,11 +20,8 @@ class ParserTest(unittest.TestCase):
         except IOError as e:
             assert False, f"`Parser instanciation` raised an exception:\n{e}"
 
-    def testSimpleParsing(self):
-        expected = [
-            'salut', 'grandpy', '!', 'connais', ',',
-            'hasard', "adresse", "openclassrooms", '?'
-        ]
+    def testParsing(self):
+        expected = ['!', ',', 'adresse', 'openclassrooms', '?']
 
         parsed_data = self.parser.parse(self.question)
 
@@ -34,11 +29,29 @@ class ParserTest(unittest.TestCase):
         # Check if the original string haven't been mutated.
         self.assertEqual(self.question, self.parser.original_string)
 
-    def testParseAddressSubject(self):
+    def testFirstExtractAddress(self):
         self.parser.parse(self.question)
-        address_subject = self.parser.find_address()
+        place = self.parser.find_address()
 
-        self.assertEqual('openclassrooms', address_subject)
+        self.assertEqual('openclassrooms', place)
+
+    def testSecondExtractAddress(self):
+        self.parser.parse("Tu connais l'adresse de la mairie de Paris")
+        place = self.parser.find_address()
+
+        self.assertEqual('mairie paris', place)
+
+    def testThirdExtractAddress(self):
+        self.parser.parse("Où se situe la Tour Eiffel ?")
+        place = self.parser.find_address()
+
+        self.assertEqual('tour eiffel', place)
+
+    def testFourthExtractAddress(self):
+        self.parser.parse("Où est la cathédrale Notre-Dame")
+        place = self.parser.find_address()
+
+        self.assertEqual('cathédrale notre-dame', place)
 
 
 if __name__ == '__main__':
