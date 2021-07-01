@@ -56,9 +56,17 @@ Use ``npm run build-tailwindcss`` which will build the ``styles.css`` file.
 When building for **production**, 
 set ``NODE_ENV=production`` on the command line when building your CSS:
 ````shell
-NODE_ENV=production npm run build-tailwindcss
+$ NODE_ENV=production npm run build-tailwindcss
 ````
 This will make sure Tailwind removes any unused CSS for best performance.
 
 ### Run on localhost
-After the installation steps, you can run the application through the termianl with one's of the following command:
+After the installation steps, you can run the application through the terminal with the following command (don't 
+forget to activate your virtual environment):
+```shell
+$ flask run
+```
+or with [Gunicorn](https://gunicorn.org/):
+````shell
+$ gunicorn wsgi:app
+````
