@@ -3,7 +3,7 @@ module.exports = {
     './grandpybot/templates/**/*.html',
     './grandpybot/static/js/message.js',
   ],
-  darkMode: 'class', // undefined, 'media' or 'class'
+  darkMode: 'class', // false, 'media' or 'class'
   theme: {
     extend: {
       height: theme => ({
@@ -16,7 +16,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      textColor: ['visited'],
+    },
   },
   plugins: [],
 }
