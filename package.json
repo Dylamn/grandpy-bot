@@ -6,9 +6,12 @@
   "directories": {
     "test": "tests"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-tailwindcss": "npx tailwindcss-cli@latest build grandpybot/static/css/tailwind.css -o grandpybot/static/css/compiled.css"
+    "build": "npx tailwindcss-cli@latest build grandpybot/static/css/tailwind.css -o grandpybot/static/css/compiled.css"
   },
   "repository": {
     "type": "git",

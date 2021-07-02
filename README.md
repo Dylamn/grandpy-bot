@@ -50,13 +50,13 @@ You now have finished setting up your virtual environment.
 The project uses [Tailwindcss](https://tailwindcss.com/) and requires you to build the `.css` file in order
 to get the styles for the front-end of the project.
 
-Use ``npm run build-tailwindcss`` which will build the ``styles.css`` file.
+Use ``npm run build`` which will build the ``styles.css`` file.
 
 #### Building for production
 When building for **production**, 
 set ``NODE_ENV=production`` on the command line when building your CSS:
 ````shell
-$ NODE_ENV=production npm run build-tailwindcss
+$ NODE_ENV=production npm run build
 ````
 This will make sure Tailwind removes any unused CSS for best performance.
 
