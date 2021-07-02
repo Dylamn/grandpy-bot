@@ -58,8 +58,9 @@ function displayAnswer (json, bot_msg) {
   // Write grandpy messages...
   bot_msg.update(`Voici l'adresse mon poussin :\n${json.address}`)
   bot_msg.embedMap(json.location, json.address)
-  grandpy.writeMessage(json.message)
-  grandpy.writeMessage(json.wiki_text)
+
+  if (json.message) grandpy.writeMessage(json.message)
+  if (json.wiki_text) grandpy.writeMessage(json.wiki_text)
 }
 
 /**
