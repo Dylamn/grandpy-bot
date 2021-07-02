@@ -191,7 +191,7 @@ class Message {
     }
 
     // CSS classes which will be applied on the line(s).
-    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg', 'whitespace-pre-wrap']
+    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg', 'whitespace-pre-wrap', 'break-all']
 
     if (this.fromSelf) { // Means the message(s) comes from the user.
       styleClasses.push('bg-blue-500', 'dark:bg-blue-600', 'text-white', 'rounded-br-none')
