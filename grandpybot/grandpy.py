@@ -44,11 +44,6 @@ class GrandpyBot:
                 for comp in data_get(gmaps_result, 'address_components')
                 if 'route' in comp['types']
             ][0:]
-            print([
-                comp['long_name']
-                for comp in data_get(gmaps_result, 'address_components')
-                if 'route' in comp['types']
-            ])
         else:
             result['error'] = {
                 'status': 'location_not_found',

@@ -187,11 +187,19 @@ class Message {
       line = document.createElement('div')
     } else {
       line = document.createElement('span')
-      lineContent = document.createTextNode(content)
+      // A regexp which check if an URL is present in the string.
+      const hasUrl = content.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/)
+
+      if (hasUrl) { // An url has been found by the regexp.
+        line.insertAdjacentText('afterbegin', content.replace(hasUrl[0], ""))
+        lineContent = this.wrapUrl(content, hasUrl[0])
+      } else {
+        lineContent = document.createTextNode(content)
+      }
     }
 
     // CSS classes which will be applied on the line(s).
-    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg', 'whitespace-pre-wrap', 'break-all']
+    const styleClasses = ['inline-block', 'px-4', 'py-2', 'rounded-lg', 'whitespace-pre-wrap', 'break-words']
 
     if (this.fromSelf) { // Means the message(s) comes from the user.
       styleClasses.push('bg-blue-500', 'dark:bg-blue-600', 'text-white', 'rounded-br-none')
@@ -265,6 +273,21 @@ class Message {
     }
 
     return this
+  }
+
+  /**
+   *
+   * @param content
+   * @param url
+   * @return {HTMLAnchorElement}
+   */
+  wrapUrl (content, url) {
+    const link = document.createElement('a')
+    link.classList.add('text-blue-600', 'hover:underline')
+    link.href = url
+    link.innerText = url
+
+    return link
   }
 }
 

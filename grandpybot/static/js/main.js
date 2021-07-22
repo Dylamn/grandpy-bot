@@ -59,23 +59,33 @@ function displayAnswer (json, bot_msg) {
   bot_msg.update(`Voici l'adresse mon poussin :\n${json.address}`)
   bot_msg.embedMap(json.location, json.address)
 
-  if (json.message) grandpy.writeMessage(json.message)
-  if (json.wiki_text) grandpy.writeMessage(json.wiki_text)
+  if (json.message && json.wiki_text) {
+    bot_msg.update(json.message)
+    grandpy.writeMessage(json.wiki_text)
+  }
+
+  if (json.wiki_url) {
+    grandpy.writeMessage(
+      `Voici un lien si tu veux en savoir plus sur cet endroit :\n${json.wiki_url}`
+    )
+  }
+
+  const messagesBox = document.querySelector('#messages')
+  messagesBox.scrollTop = messagesBox.scrollHeight
 }
 
 /**
  * Messages observer.
- * Scroll to the bottom of the messages frame at each messages.
+ * Scroll to the bottom of the messages frame at each messages reported by the observer.
  *
  * @type {MutationObserver}
  */
 const messagesObserver = new MutationObserver(function (mutations) {
-  const messagesRoot = mutations[0].target
+  const messagesRoot = document.querySelector('#messages')
   // Scroll down to the last message
-  console.log(messagesRoot)
   messagesRoot.scrollTop = messagesRoot.scrollHeight
 })
 
 messagesObserver.observe(document.getElementById('messages'), {
-  childList: true
+  childList: true,
 })
