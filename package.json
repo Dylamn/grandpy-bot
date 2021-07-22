@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tailwindcss-cli@latest build grandpybot/static/css/tailwind.css -o grandpybot/static/css/compiled.css"
+    "build": "npx tailwindcss -i ./grandpybot/static/css/tailwind.css -o ./grandpybot/static/css/compiled.css",
+    "build-cli": "npx tailwindcss-cli@latest build grandpybot/static/css/tailwind.css -o grandpybot/static/css/compiled.css"
   },
   "repository": {
     "type": "git",
